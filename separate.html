@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<label for="modul" style = 'display:block'>Модуль</label>
+<input type="text" id = 'modul' value = '465'><br>
+<label for="input" style='margin-top:40px; display:block'>Комбинация</label>    
+<input type="text" id = 'input'>  
+<input type="button" value = 'Ввод' id = 'button'>  
+</body>
+<script>
+    //модуль 465
+    //число 5810
+
+   
+    
+    const modul = document.getElementById('modul');
+    const miss = document.getElementById('input');
+    const button = document.getElementById('button');
+    let count_mod = 0;    //число слагаемых в модуле
+    let corr_able = 0;    //корректирующая способность
+    let rezIter = 0;
+    
+    button.addEventListener('click', ()=>{
+        let textMod10 = modul.value.toString(2); // модуль
+        let textMiss10 = miss.value.toString(2); // принятая кк
+        let textMod2 = (+modul.value >>> 0).toString(2); //     в
+        let textMiss2 = (+miss.value >>> 0).toString(2); //  двоичке
+        let buff = 0;//буфферный элемент, который мотает по сторонам
+        let textModCurr = 0; // будет сдвинутый модуль
+        let textMissCurr = 0; // будет делимое
+        let cycle = 0;
+        textMissCurr = textMiss2;
+        
+        for(let l = 0;l<15;++l){
+            
+            while(textMissCurr.length<15){
+                    textMissCurr ='0'+textMissCurr;
+            }
+            console.log('start tmc '+textMissCurr);
+            
+                
+                if(l>0){
+                   textMissCurr = textMissCurr.substr(1, textMissCurr.length) + textMissCurr.charAt(0); 
+                    console.log('sdvinul  '+textMissCurr);
+                                
+                }
+                
+            
+            
+            cycle = textMissCurr;
+            
+         //делаем количество знаков таким, чтобы незначащие нули ушли   
+            while(textMissCurr[0]==0){
+                
+                    textMissCurr = textMissCurr.slice(1);
+                console.log('delete 0 '+ textMissCurr);
+            }
+        //делаем количество знаков таким, чтобы незначащие нули ушли
+        
+        
+        
+        for (let i = 0; i< textMod2.length; ++i){
+        if(textMod2[i] == 1){
+            ++count_mod;
+        }
+    }
+    corr_able = Math.ceil((count_mod-1)/2);//исправляющая способность
+            
+        let textMiss10_1=0;  //не путаемся с предыдущим  
+           
+    for(let t = 0; t<textMissCurr.length-1; ++t){
+        let missBuff = (+textMissCurr[t]) * Math.pow(2,textMissCurr.length-1-t);
+        textMiss10_1 = textMiss10_1 + missBuff;
+        
+    }  
+            console.log(textMiss10_1);
+    rezIter = +textMiss10_1;
+        
+    while (textMissCurr.length>=textMod2.length) {
+        
+        textModCurr = textMod10 << (textMissCurr.length-textMod2.length);
+        
+        rezIter = rezIter ^ textModCurr;
+        textMissCurr = (+rezIter >>> 0).toString(2);
+       console.log(rezIter);
+   console.log(textMissCurr);
+    }
+        let count_ost = 0;
+    for(let i = 0;i<textMissCurr.length;++i){
+        if(textMissCurr[i]==1)
+            ++count_ost;
+    }
+        console.log('ostatok:' +count_ost);
+     if(count_ost<=2){
+         console.log('sdvig vlevo na   ' +l);
+         break;
+     }       
+            textMissCurr = cycle;
+            }
+         
+    });
+   
+    
+    
+    
+</script>
+</html>
